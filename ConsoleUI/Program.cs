@@ -19,8 +19,14 @@ Console.WriteLine("--------- Deleted Car List -------");
 carManager.Delete(car);
 carManager.Display();
 Console.WriteLine("--------- White Car List ---------");
-carManager.GetCarsByColorId(2);
+foreach (var item in carManager.GetCarsByColorId(2))
+{
+    Console.WriteLine("Id: {0} -- Brand Id: {1} -- Color Id: {2} -- Model Year: {3} -- Daily Price: {4} -- Description: {5}", item.Id, item.BrandId, item.ColorId, item.ModelYear, item.DailyPrice, item.Description);
+}
 Console.WriteLine("----------------------------------\n");
 Console.WriteLine("--------- Kia Car List -----------");
-carManager.GetCarsByBrandId(3);
+foreach (var item in carManager.GetCarsByBrandId(3))
+{
+    Console.WriteLine("Id: {0} -- Brand Id: {1} -- Color Id: {2} -- Model Year: {3} -- Daily Price: {4} -- Description: {5}", item.Id, item.BrandId, item.ColorId, item.ModelYear, item.DailyPrice, item.Description);
+}
 Console.WriteLine("----------------------------------\n");
