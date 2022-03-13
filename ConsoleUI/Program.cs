@@ -29,13 +29,13 @@ static void CarTest()
     carManager.Delete(car);
     carManager.Display();
     Console.WriteLine("--------- White Car List ---------");
-    foreach (var item in carManager.GetCarsByColorId(2))
+    foreach (var item in carManager.GetCarsByColorId(2).Data)
     {
         Console.WriteLine("Id: {0} -- Brand Id: {1} -- Color Id: {2} -- Model Year: {3} -- Daily Price: {4} -- Description: {5}", item.Id, item.BrandId, item.ColorId, item.ModelYear, item.DailyPrice, item.Description);
     }
     Console.WriteLine("----------------------------------\n");
     Console.WriteLine("--------- Kia Car List -----------");
-    foreach (var item in carManager.GetCarsByBrandId(3))
+    foreach (var item in carManager.GetCarsByBrandId(3).Data)
     {
         Console.WriteLine("Id: {0} -- Brand Id: {1} -- Color Id: {2} -- Model Year: {3} -- Daily Price: {4} -- Description: {5}", item.Id, item.BrandId, item.ColorId, item.ModelYear, item.DailyPrice, item.Description);
     }
@@ -58,7 +58,7 @@ static void BrandTest()
     brandManager.Delete(brand);
     brandManager.Display();
     Console.WriteLine("----------- One Brand List ---------");
-    Brand choosenBrand = brandManager.GetById(4);
+    Brand choosenBrand = brandManager.GetById(4).Data;
     Console.WriteLine("Id: " + choosenBrand.Id + " -- Brand Name: " + choosenBrand.BrandName);
     Console.WriteLine("------------------------------------\n");
 }
@@ -79,7 +79,7 @@ static void ColorTest()
     colorManager.Delete(color);
     colorManager.Display();
     Console.WriteLine("----------- One Color List ---------");
-    Color choosenColor = colorManager.GetById(2);
+    Color choosenColor = colorManager.GetById(2).Data;
     Console.WriteLine("Id: " + choosenColor.Id + " -- Color Name: " + choosenColor.ColorName);
     Console.WriteLine("------------------------------------\n");
 }
@@ -87,10 +87,20 @@ static void ColorTest()
 static void CarDetailDtoTest()
 {
     CarManager carManager = new CarManager(new EfCarDal());
-    Console.WriteLine("---------- All Car Details -----------");
-    foreach (var car in carManager.GetCarDetails())
+
+    var result = carManager.GetCarDetails();
+    if (result.Success)
     {
-        Console.WriteLine("Car Name: {0} -- Brand Name: {1} -- Color Name: {2} -- Daily Price: {3}", car.CarName, car.BrandName, car.ColorName, car.DailyPrice);
+        Console.WriteLine("---------- All Car Details -----------");
+        foreach (var car in result.Data)
+        {
+            Console.WriteLine("Car Name: {0} -- Brand Name: {1} -- Color Name: {2} -- Daily Price: {3}", car.CarName, car.BrandName, car.ColorName, car.DailyPrice);
+        }
+        Console.WriteLine("--------------------------------------\n");
     }
-    Console.WriteLine("--------------------------------------\n");
+    else
+    {
+        Console.WriteLine(result.Message);
+    }
+    
 }
