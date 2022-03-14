@@ -11,7 +11,11 @@ using Entities.Concrete;
 
 //ColorTest();
 
-CarDetailDtoTest();
+//CarDetailDtoTest();
+
+//CustomerTest();
+
+//RentalTest();
 
 static void CarTest()
 {
@@ -102,5 +106,35 @@ static void CarDetailDtoTest()
     {
         Console.WriteLine(result.Message);
     }
-    
+
+}
+
+static void CustomerTest()
+{
+    CustomerManager customerManager = new CustomerManager(new EfCustomerDal());
+    Console.WriteLine("---------- All Customer List -----------");
+    customerManager.Display();
+    Console.WriteLine("---------- Added Customer List ---------");
+    Customer customer = new Customer { UserId = 2, CompanyName = "Kodlama.io" };
+    customerManager.Add(customer);
+    customerManager.Display();
+}
+
+static void RentalTest()
+{
+    RentalManager rentalManager = new RentalManager(new EfRentalDal());
+    Console.WriteLine("---------- All Rental List -----------");
+    rentalManager.Display();
+    Console.WriteLine("---------- Added Rental List ---------");
+    Rental rental1 = new Rental { CarId = 2, CustomerId = 3, RentDate = DateTime.Now.Date.AddDays(1) };
+    var result1 = rentalManager.Add(rental1);
+    if (result1.Success)
+    {
+        Console.WriteLine(result1.Message);
+    }
+    else
+    {
+        Console.WriteLine(result1.Message);
+    }
+    rentalManager.Display();
 }
