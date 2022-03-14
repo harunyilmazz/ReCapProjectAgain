@@ -27,11 +27,11 @@ namespace Business.Concrete
 
         public IResult Add(Rental entity)
         {
-            var result = _rentalDal.Get(r => r.CarId == entity.CarId);
-            if (result.ReturnDate == null)
-            {
-                return new ErrorResult(Messages.RentalAddInvalid);
-            }
+            //var result = _rentalDal.Get(r => r.CarId == entity.CarId);
+            //if (result.ReturnDate == null)
+            //{
+            //    return new ErrorResult(Messages.RentalAddInvalid);
+            //}
             _rentalDal.Add(entity);
             return new SuccessResult(Messages.RentalAdded);
         }
