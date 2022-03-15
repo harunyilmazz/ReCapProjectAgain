@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
+using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -27,9 +28,9 @@ namespace Business.Concrete
             _rentalDal.Display();
         }
 
+        [ValidationAspect(typeof(RentalValidator))]
         public IResult Add(Rental entity)
         {
-            ValidationTool.Validate(new RentalValidator(), entity);
 
             _rentalDal.Add(entity);
             return new SuccessResult(Messages.RentalAdded);
