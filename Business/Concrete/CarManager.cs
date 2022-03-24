@@ -3,6 +3,7 @@ using Business.BusinessAspects.Autofac;
 using Business.Constants;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Caching;
+using Core.Aspects.Autofac.Transaction;
 using Core.Aspects.Autofac.Validation;
 using Core.CrossCuttingConcerns.Validation;
 using Core.Utilities.Results;
@@ -33,6 +34,13 @@ namespace Business.Concrete
 
             _carDal.Add(car);
             return new SuccessResult(Messages.CarAdded);
+        }
+
+        [TransactionScopeAspect]
+        public IDataResult<List<Car>> GetAllTransactionalTest()
+        {
+            _carDal.Display();
+            return new SuccessDataResult<List<Car>>(_carDal.GetAll(), Messages.CarsListed);
         }
 
         public IResult Delete(Car car)
