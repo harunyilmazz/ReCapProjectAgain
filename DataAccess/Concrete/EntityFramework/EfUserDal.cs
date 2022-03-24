@@ -1,6 +1,6 @@
 ﻿using Core.DataAccess.EntityFramework;
+using Core.Entities.Concrete;
 using DataAccess.Abstract;
-using Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,10 +18,23 @@ namespace DataAccess.Concrete.EntityFramework
                 List<User> entities = context.Set<User>().ToList();
                 foreach (var item in entities)
                 {
-                    Console.WriteLine("Id: {0} -- First Name: {1} -- Last Name: {2} -- Email: {3} -- Password: {4}", item.Id, item.FirstName, item.LastName, item.Email, item.Password);
+                    Console.WriteLine("Id: {0} -- First Name: {1} -- Last Name: {2} -- Email: {3}", item.Id, item.FirstName, item.LastName, item.Email);
                 }
             }
             Console.WriteLine("----------------------------------\n");
+        }
+
+        public List<OperationClaim> GetClaims(User user)
+        {
+            using (var context = new RentACarContext())
+            {
+                var result = from oc in context.OperationClaims
+                             join uoc in context.UserOperationClaims
+                                 on oc.Id equals uoc.OperationClaimId
+                             where uoc.UserId == user.Id
+                             select new OperationClaim { Id = oc.Id, Name = oc.Name };
+                return result.ToList();
+            }
         }
     }
 }
