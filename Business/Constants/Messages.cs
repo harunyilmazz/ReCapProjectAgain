@@ -35,6 +35,7 @@ namespace Business.Constants
         public static string RentalsListed = "Kiralamalar listelendi";
         public static string RentalUpdated = "Kiralama güncellendi";
         public static string RentalAddInvalid = "Kiralama ekleme geçersiz";
+        public static string RentalDetailsListed = "Kiralama detayları listelendi";
         public static string CarImageAdded = "Yeni araba resmi yüklendi";
         public static string CarImageDeleted = "Araba resmi silindi";
         public static string CarImagesListed = "Araba resimleri listelendi";
@@ -49,5 +50,6 @@ namespace Business.Constants
         public static string AccessTokenCreated = "Access token başarıyla oluşturuldu";
 
         public static string AuthorizationDenied = "Yetkiniz yok";
+
     }
 }
