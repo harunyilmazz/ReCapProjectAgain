@@ -27,7 +27,7 @@ namespace DataAccess.Concrete.EntityFramework
             Console.WriteLine("----------------------------------\n");
         }
 
-        public List<CarDetailDto> GetCarDetails()
+        public List<CarDetailDto> GetCarDetails(Expression<Func<CarDetailDto, bool>> filter = null)
         {
             using (RentACarContext context = new RentACarContext())
             {
@@ -41,9 +41,12 @@ namespace DataAccess.Concrete.EntityFramework
                                  BrandName = b.BrandName,
                                  ColorName = cl.ColorName,
                                  ModelYear = c.ModelYear,
-                                 DailyPrice = c.DailyPrice
+                                 DailyPrice = c.DailyPrice,
+                                 CarImagePath = (from i in context.CarImages where i.CarId == c.Id select i.ImagePath).ToList()
                              };
-                return result.ToList();
+                return filter == null
+                    ? result.ToList()
+                    : result.Where(filter).ToList();
             }
         }
     }
