@@ -5,12 +5,13 @@ using Entities.DTOs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfRentalDal: EfEntityRepositoryBase<Rental,RentACarContext>, IRentalDal
+    public class EfRentalDal : EfEntityRepositoryBase<Rental, RentACarContext>, IRentalDal
     {
         public void Display()
         {
@@ -25,7 +26,7 @@ namespace DataAccess.Concrete.EntityFramework
             Console.WriteLine("----------------------------------\n");
         }
 
-        public List<RentalDetailDto> GetRentalDetails()
+        public List<RentalDetailDto> GetRentalDetails(Expression<Func<RentalDetailDto, bool>> filter = null)
         {
             using (RentACarContext context = new RentACarContext())
             {
@@ -36,13 +37,16 @@ namespace DataAccess.Concrete.EntityFramework
                              join u in context.Users on cus.UserId equals u.Id
                              select new RentalDetailDto
                              {
+                                 CarId = r.CarId,
                                  BrandName = b.BrandName,
                                  FirstName = u.FirstName,
                                  LastName = u.LastName,
                                  RentDate = r.RentDate,
                                  ReturnDate = r.ReturnDate
                              };
-                return result.ToList();
+                return filter == null 
+                    ? result.ToList()
+                    : result.Where(filter).ToList();
             }
         }
     }

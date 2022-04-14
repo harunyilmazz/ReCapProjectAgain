@@ -13,5 +13,6 @@ namespace Business.Abstract
     public interface IRentalService:IBaseService<Rental>
     {
         IDataResult<List<RentalDetailDto>> GetRentalDetails();
+        IDataResult<bool> CheckIfCanCarBeRentedBetweenSelectedDates(int carId, DateTime rentDate, DateTime returnDate);
     }
 }

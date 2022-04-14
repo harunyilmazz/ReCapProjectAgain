@@ -62,5 +62,27 @@ namespace Business.Concrete
         {
             return new SuccessDataResult<List<RentalDetailDto>>(_rentalDal.GetRentalDetails(), Messages.RentalDetailsListed);
         }
+
+        public IDataResult<bool> CheckIfCanCarBeRentedBetweenSelectedDates(int carId, DateTime rentDate, DateTime returnDate)
+        {
+            return CheckIfCarAvailableBetweenSelectedDates(carId, rentDate, returnDate);       
+        }
+
+        private IDataResult<bool> CheckIfCarAvailableBetweenSelectedDates(int carId, DateTime rentDate, DateTime returnDate)
+        {
+            var allRentals = _rentalDal.GetAll(r => r.CarId == carId);
+
+            foreach (var reservation in allRentals)
+            {
+                if ((rentDate >= reservation.RentDate && rentDate <= reservation.ReturnDate) ||
+                    (returnDate >= reservation.RentDate && returnDate <= reservation.ReturnDate) ||
+                    (reservation.RentDate >= rentDate && reservation.RentDate <= returnDate) ||
+                    (reservation.ReturnDate >= rentDate && reservation.ReturnDate <= returnDate))
+                {
+                    return new ErrorDataResult<bool>(false, Messages.ReservationBetweenSelectedDatesExist);
+                }
+            }
+            return new SuccessDataResult<bool>(true, Messages.CarCanBeRentedBetweenSelectedDates);
+        }
     }
 }
